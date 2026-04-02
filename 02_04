@@ -35,5 +35,13 @@ int main(){
     }else{
         cout<<"Blad: nie ma takiego znaku."<<endl;
     }
+
+    class MyInt{
+    int value;
+    int add(MyInt a){return this->value + a->value}
+    MyInt(int v){this->value=v}
+    };
+    
+    class calc{}; //przetrzymuje stany??
  return 0;
 }
