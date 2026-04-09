@@ -1,0 +1,117 @@
+#include<iostream>
+using namespace std;
+
+enum State{
+    OK,
+    DIV0,
+    OUT_OF_BOUNDS
+};
+
+class myInt{
+    public:
+        int value;
+        
+        myInt(int v=0){
+            this->value=v;
+        }
+        
+        myInt add(myInt*a){
+            return myInt(this->value+a->value);
+        }
+        
+        myInt sub(myInt*a){
+            return myInt(this->value-a->value);
+        }
+        
+        myInt mul(myInt*a){
+            return myInt(this->value*a->value);
+        }
+        
+        myInt divide(myInt*a){
+            return myInt(this->value/a->value);
+        }
+        
+        myInt power(myInt*a){
+            int temp=1, i=0;
+            for(i=0;i<a->value;i++){
+                temp=temp*this->value;
+            }
+            return myInt(temp);
+        }
+};
+
+class myReal{
+    public:
+        float val;
+};
+
+class calc{
+    public:
+        int state;
+        myInt result;
+        
+        calc(myInt*a,myInt*b,char op){
+            this->state=0;
+        
+        
+        switch(op){
+            case '+':
+            this->result=a->add(b); break;
+            case '-':
+            this->result=a->sub(b); break;
+            case '*':
+            this->result=a->mul(b); break;
+            case '/':
+            if(b->value==0){
+                this->state=1;
+            }
+            else{
+                this->result=a->divide(b);
+            } break;
+            case '^':
+            if(b->value<0){
+                this->state=2;
+            }
+            else{
+                this->result=a->power(b);
+            } break;
+            
+            default:
+            this->state=3; break;
+        }
+    }
+};
+
+int main(){
+    float vala,valb;
+    char op;
+    
+    cout<<"Podaj pierwsza liczbe: "<<endl;
+    cin>>vala;
+    cout<<"Jaka operacje chcesz wykonac? (+,-,*,/,^)"<<endl;
+    cin>>op;
+    cout<<"Podaj druga liczbe: "<<endl;
+    cin>>valb;
+    //cout<<typeid(vala).name()<<endl;
+    //cout<<float(vala)<<endl;
+    
+    myInt a(vala);
+    myInt b(valb);
+    
+    calc oblicz(&a,&b,op);
+    
+    if(oblicz.state==0){
+        cout<<"Wynik: "<<oblicz.result.value<<endl;
+    }
+    else if(oblicz.state==1){
+        cout<<"Blad: nie mozna podzielic przez 0."<<endl;
+    }
+    else if(oblicz.state==2){
+        cout<<"Blad: Nie mozna podniesc liczby do potegi ujemnej."<<endl;
+    }
+    else{
+        cout<<"Blad: nie ma takiego znaku: "<<op<<endl;
+    }
+
+ return 0;
+}
