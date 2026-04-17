@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int main(){
+    
+    string s;
+    int bracket_count=0;
+    int ids[10];
+    int ide[10];
+    int i=0;
+    string tabstr[10];
+    
+    //cout << "input: " << endl;
+    //cin >> s;
+    s="2*(14/(3-1))";
+    for (char &c : s){
+        //cout << c <<endl;
+        i+=1;
+        if(c=='('){
+            bracket_count+=1;
+            ids[bracket_count]=i;
+        }
+        if(c==')'){
+            ide[bracket_count]=i;
+            bracket_count-=1;
+        }
+        cout<<bracket_count<<endl;
+    }
+    
+    tabstr[0]=s;
+    for(int k=1;k<3;k++){
+        tabstr[k]=s.substr(ids[k],ide[k]-ids[k]-1);
+        cout<<tabstr[k]<<endl;
+    }
+    return 0;
+}
