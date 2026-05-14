@@ -62,6 +62,12 @@ public:
      * Parsowanie symbolu terminalnego
      */
     Node* terminal(){
+        if (pos < eq.size() && eq[pos] == '(') {
+            pos++;
+            Node* node = expr_as();
+            if (pos < eq.size() && eq[pos] == ')') pos++;
+            return node;
+        }
        return new Node(consumeAll(),nullptr,nullptr);
     }
 
@@ -69,10 +75,10 @@ public:
      * Parsowanie dodawania i odejmowania
      */
     Node* expr_as(){
-        Node* left = terminal();
+        Node* left = expr_md();
         string n;
         while(!(n = consumeUntil("-+")).empty()){
-            Node* right = terminal();
+            Node* right = expr_md; //tutaj wyskakuje błąd idk
             left = new Node(n,left,right);
         }
         return left;
